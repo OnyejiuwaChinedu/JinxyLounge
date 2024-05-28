@@ -1,0 +1,323 @@
+﻿@model JinxyLounge.Areas.Models.EmployeeListViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Areas/Admin/Content/Vendor/jquery/jquery-1.10.2.js"></script>
+<script src="~/Areas/Admin/Content/Vendor/jquery/jquery-1.10.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<div class="row">
+    <div class="col-sm-6">
+        <h2>Manage <b>Employees</b></h2>
+    </div>
+    <div class="col-sm-6">
+
+        @*<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a>
+        <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>*@
+
+        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons"></i><span>Add New Employee</span></a>
+    </div>
+</div>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Date_Of_Birth</th>
+            <th>Age</th>
+            <th>Start_Date</th>
+            <th>EmployeeTypes</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Employees != null)
+        {
+            foreach (var employee in Model.Employees)
+            {
+                <tr>
+                    <td>
+                        @employee.Name
+                    </td>
+                    <td>
+                        @employee.Phone
+                    </td>
+                    <td>
+                        @employee.Email
+                    </td>
+                    <td>
+                        @employee.Address
+                    </td>
+                    <td>
+                        @employee.Date_Of_Birth
+                    </td>
+                    <td>
+                        @employee.Age
+                    </td>
+                    <td>
+                        @employee.Start_Date
+                    </td>
+                    <td>
+                        @employee.EmployeeTypes
+                    </td>
+                    <td>
+                        @employee.EmployeeTypeId
+                    </td>
+                    <td>
+                        <a href="#editEmployeeModal" class="edit" data-toggle="modal" data-target="#editEmployeeModal" onclick="getEditInfo('@employee.ID', '@employee.Name', '@employee.Phone', '@employee.Email', '@employee.Address', '@employee.Date_Of_Birth', '@employee.Age', '@employee.Start_Date', '@employee.EmployeeTypes', '@employee.EmployeeTypeId')"><i class="material-icons" title="Edit">&#xE254;</i></a>
+                        <a href="#deleteEmployeeModal" class="data-btn btn btn-danger" data-toggle="modal" onclick="getDeleteInfo('@employee.ID')"><i class="material-icons" title="Delete">&#xE872;</i></a>
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+<!-- Delete Modal HTML -->
+<div id="deleteEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Employee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <input type="hidden" class="form-control" id="deleteId">
+
+                <div class="modal-body">
+                    <p>Are you sure you want to delete these Records?</p>
+                    <p class="text-warning"><small>This action cannot be undone.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <button type="submit" class="btn btn-danger" onclick="DeleteEmployee()"> Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Add Modal HTML -->
+<div id="addEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Employee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="number" class="form-control" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date_Of_Birth</label>
+                        <input type="text" class="form-control" id="date_of_birth" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" class="form-control" id="age" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start_Date</label>
+                        <input type="text" class="form-control" id="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>EmployeeTypes</label>
+                        <input type="text" class="form-control" id="employeetypes" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <button type="submit" class="btn btn-success" onclick="createEmployee()"> Save</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal HTML -->
+<div id="editEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Employee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <input type="hidden" class="form-control" id="editId">
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" id="editName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" class="form-control" id="editAge" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date_Of_Birth</label>
+                        <input type="date" class="form-control" id="editDate_Of_Birth" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" class="form-control" id="editPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" id="editAddress" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" id="editEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start_Date</label>
+                        <input type="number" class="form-control" id="editStart_Date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>EmployeeTypes</label>
+                        <input type="text" class="form-control" id="editEmployeeTypes" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+
+                    <button type="submit" class="btn btn-success" onclick="editEmployee()"> Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function createEmployee() {
+
+        var name = $('#name').val();
+        var age = $('#age').val();
+        var date_of_birth = $('#date_of_birth').val();
+        var phone = $('#phone').val();
+        var address = $('#address').val();
+        var email = $('#email').val();
+        var start_date = $('#start_date').val();
+        var employeetypes = $('#employeetypes').val();
+
+        const data = { Name: name, Age: age, Date_Of_Birth: date_of_birth, Phone: phone, Address: address, Email: email, Start_Date: start_date, EmployeeTypes: employeetypes }
+        console.log(data);
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("AddEmployee", "Employee")',
+            data: data,
+
+        })
+        .done(function (response) {
+            if (response.success == "true") {
+                alert("Saved succesfully")
+            location.reload();
+        }
+        else {
+            $(".errorDiv").html(response.Message);
+        }
+        });
+    }
+
+    //get delete data to the modal
+    function getDeleteInfo(id) {
+
+        $('#deleteId').val(id);
+    }
+
+    // delete the employee
+    function DeleteProduct() {
+
+        var id = $('#deleteId').val();
+
+        const data = { Id : id }
+          $.ajax({
+            type: "post",
+            url: '@Url.Action("Deleted", "Employee")',
+            data: data,
+
+        })
+        .done(function (response) {
+            if (response.success == "true") {
+                alert("Deleted succesfully")
+            location.reload();
+        }
+            else {
+                alert("error occured");
+        }
+    });
+
+    }
+
+    //get employee info modal
+    function getEditInfo(id, name, age, dateofbirth, phone, address, email, startdate, employeetypes) {
+        $('#editId').val(id);
+        $('#editName').val(name);
+        $('#editAge').val(age);
+        $('#editDateOfBirth').val(dateofbirth);
+        $('#editPhone').val(phone);
+        $('#editAddress').val(address);
+        $('#editEmail').val(email);
+        $('#editStartdate').val(startdate);
+        $('#editEmployeeTypes').val(employeetypes);
+
+    }
+
+    function editProduct() {
+        var id = $('#editId').val();
+        var name = $('#editName').val();
+        var age = $('#editAge').val();
+        var dateofbirth = $('#editDateOfBirth').val();
+        var phone = $('#editPhone').val();
+        var address = $('#editAddress').val();
+        var email = $('#editEmail').val();
+        var startdate = $('#editStartDate').val();
+        var employeetypes = $('#editEmployeeTypes').val();
+
+
+        const data = { Id: id, Name: name, Age: age, DateOfBirth: dateofbirth, Phone: phone, Address: address, Email: email, StartDate: startdate, EmployeeTypes: employeetypes }
+        console.log(data);
+          $.ajax({
+            type: "post",
+              data: data,
+          })
+              .done(function (response) {
+                  if (response.success == "true") {
+                      alert("Edited succesfully")
+                      location.reload();
+                  }
+                  else {
+                      alert("error occured");
+                  }
+              });
+    }
+</script>

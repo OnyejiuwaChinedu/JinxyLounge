@@ -1,0 +1,82 @@
+﻿@model JinxyLounge.Areas.ViewModels.ProductActionModel
+
+
+@if (Model != null)
+{
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+
+                @if (Model.Id > 0)
+                {
+                    <span>Edit Product</span>
+                }
+                else
+                {
+                    <span>Create Product</span>
+                }
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <form id="actionForm">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" name="Name" placeholder="Enter Product Name." value="@Model.Name">
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <textarea class="form-control" name="Price" placeholder="Enter Product Price.">@Model.Price</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="Description" placeholder="Enter Product Description.">@Model.Description</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <textarea class="form-control" name="Category" placeholder="Enter Product Category.">@Model.Category</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Manufacture Date</label>
+                    <textarea class="form-control" name="Manufacture Date" placeholder="Enter Product Manufacturing Date.">@Model.Mfg_Date</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Expiry Date</label>
+                    <textarea class="form-control" name="Expiry Date" placeholder="Enter Product Expiry Date">@Model.Exp_Date</textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="errorDiv">
+    </div>
+
+    <div>
+        <div class="modal-footer">
+            <button id="actionButton" type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i>Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Close</button>
+        </div>
+    </div>
+}
+
+<script>
+    $("#actionButton").click(function () {
+        $.ajax({
+            url: '@Url.Action("Action", "Product")',
+            type: "post",
+            data: $("#actionForm").serialize()
+        })
+        .done(function (response) {
+            if(response.Success)
+            {
+                location.reload();
+            }
+            else {
+                $(".errorDiv").html(response.Message);
+            }
+        });
+    });
+</script>

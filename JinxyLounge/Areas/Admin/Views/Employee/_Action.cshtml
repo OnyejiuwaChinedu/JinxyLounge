@@ -1,0 +1,59 @@
+﻿@model JinxyLounge.Areas.Models.EmployeeActionViewModel
+
+@if (Model != null)
+{
+    <div class="modal-content">
+        <form id="actionForm">
+            <h5 class="modal-header">
+                @if (Model.Id > 0)
+                {
+                    <span>Edit Employee</span>
+                }
+                else
+                {
+                    <span>Create Employee</span>
+                }
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </h5>
+            <div class="modal-body">
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="form-group">
+                    <label>Name</label>
+                    <input class="form-control" name="Name" placeholder="Enter Product Name" value="@Model.Name">
+                </div>
+                <div class="form-group">
+                    <label>Price</label>
+                    <textarea class="form-control" name="Price" placeholder="Enter Product Price">@Model.Phone</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Product Manufacture Date</label>
+                    <textarea class="form-control" name="Mfg_Date" placeholder="Enter Product Manufacture Date">@Model.Email</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Product Expiry Date</label>
+                    <textarea class="form-control" name="Exp_Date" placeholder="Enter Product Expiry Date">@Model.Address</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <textarea class="form-control" name="Category" placeholder="Enter Product Category">@Model.Date_Of_Birth</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="Description" placeholder="Enter Product Description">@Model.Age</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="Description" placeholder="Enter Product Description">@Model.Start_Date</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" name="Description" placeholder="Enter Product Description">@Model.EmployeeTypeId</textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                <input id="actionButton" type="submit" class="btn btn-success" value="Add">
+            </div>
+        </form>
+    </div>
+}
